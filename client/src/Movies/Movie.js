@@ -2,11 +2,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useHistory } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPlus,
+  faPencilAlt,
+  faTrashAlt,
+} from "@fortawesome/free-solid-svg-icons";
 
 // Import Components
 import MovieCard from "./MovieCard";
 
-function Movie({ addToSavedList, getMovieList }) {
+function Movie({ addToSavedList, getMovieList, getResponse }) {
   //* Declare the state for the movie
   const [movie, setMovie] = useState(null);
 
@@ -53,8 +59,8 @@ function Movie({ addToSavedList, getMovieList }) {
         .delete(apiURL)
         .then((res) => {
           console.log(res);
-          alert("Item Deleted");
           getMovieList();
+          getResponse(`The movie "${movie.title}" was deleted successfully`);
           history.push(`/`);
         })
         .catch((err) => {
@@ -67,16 +73,26 @@ function Movie({ addToSavedList, getMovieList }) {
     <div className='save-wrapper'>
       <MovieCard movie={movie} />
 
-      <div className='save-button' onClick={saveMovie}>
-        Save
-      </div>
+      <div className='button-wrapper'>
+        <div className='button' onClick={saveMovie}>
+          <FontAwesomeIcon icon={faPlus} />
+        </div>
 
-      <div className='edit-button' onClick={editMovie}>
-        Edit
-      </div>
+        <div
+          className='button'
+          style={{ backgroundColor: "#e1b12c" }}
+          onClick={editMovie}
+        >
+          <FontAwesomeIcon icon={faPencilAlt} />
+        </div>
 
-      <div className='edit-button' onClick={deleteMovie}>
-        Delete
+        <div
+          className='button'
+          style={{ backgroundColor: "#c23616" }}
+          onClick={deleteMovie}
+        >
+          <FontAwesomeIcon icon={faTrashAlt} />
+        </div>
       </div>
     </div>
   );

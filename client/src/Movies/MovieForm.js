@@ -7,14 +7,13 @@ export default function MovieForm(props) {
   //* Initial state of data
   const initialState = {
     director: "",
-    metascore: 0,
+    metascore: "",
     stars: [],
     title: "",
   };
 
   //* State to manage form data
   const [movieData, setMovieData] = useState(initialState);
-  console.log("movieData:", movieData);
 
   //* Set the params variable
   const params = useParams();
@@ -37,18 +36,34 @@ export default function MovieForm(props) {
   const handleSubmission = (e) => {
     e.preventDefault();
 
-    const apiURL = `http://localhost:5000/api/movies/${movieData.id}`;
+    if (props.isEdit) {
+      const apiURL = `http://localhost:5000/api/movies/${movieData.id}`;
 
-    axios
-      .put(apiURL, movieData)
-      .then((res) => {
-        console.log(res);
-        props.getMovieList();
-        history.push("/");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      axios
+        .put(apiURL, movieData)
+        .then((res) => {
+          props.getMovieList();
+          props.getResponse(
+            `The movie "${movieData.title}" was updated successfully`
+          );
+          history.push("/");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      const apiURLPost = `http://localhost:5000/api/movies`;
+
+      axios
+        .post(apiURLPost, movieData)
+        .then((res) => {
+          props.getMovieList();
+          history.push("/");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   //* Function to get the data IF we have a path parameter
@@ -71,6 +86,7 @@ export default function MovieForm(props) {
 
   return (
     <div className='movie-form'>
+      <h3>{props.isEdit ? `Editing "${movieData.title}"` : "Add New Movie"}</h3>
       <form onSubmit={handleSubmission}>
         <label htmlFor='title'>
           Title
@@ -78,7 +94,6 @@ export default function MovieForm(props) {
             type='text'
             name='title'
             id='title'
-            placeholder='Title'
             onChange={handleChange}
             value={movieData.title}
           />
@@ -90,7 +105,6 @@ export default function MovieForm(props) {
             type='text'
             name='director'
             id='director'
-            placeholder='Director'
             onChange={handleChange}
             value={movieData.director}
           />
@@ -102,8 +116,8 @@ export default function MovieForm(props) {
             type='number'
             name='metascore'
             id='metascore'
-            placeholder='Metascore'
             onChange={handleChange}
+            placeholder='Number Only'
             value={movieData.metascore}
           />
         </label>
@@ -114,7 +128,7 @@ export default function MovieForm(props) {
             type='text'
             name='stars'
             id='stars'
-            placeholder='Stars (Separate them by commas)'
+            placeholder='(Separate them by commas)'
             onChange={handleChange}
             value={movieData.stars}
           />
