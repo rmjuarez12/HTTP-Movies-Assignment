@@ -19,7 +19,7 @@
 - [x] Add a button in the movie component that routes you to your new route with the movies's id as the URL param
 - [x] The form should make a PUT request to the server when submitted
 - [x] When the call comes back successfully, reset your form state and route the user to `/movies` where they will see the updated movie in the list
-- (Editing the movie stars can be a stretch problem... don't worry about it now. Move on to the next step, and come back and solve this at the end)
+- [x] (Editing the movie stars can be a stretch problem... don't worry about it now. Move on to the next step, and come back and solve this at the end)
 
 Movie object format:
 
@@ -40,11 +40,11 @@ Movie object format:
 
 #### Adding A Movie:
 
-- Add a route at the path `/add-movie`
-- Create a component with a form to add a new movie
-- Each created movie should have the following format (notice the array of strings - this will test your JS skills, so work through it methodically)
-- The form should make a POST request to the server when submitted
-- When the call comes back successfully, reset your form state and route the user to `/movies`
+- [x] Add a route at the path `/add-movie`
+- [x] Create a component with a form to add a new movie
+- [x] Each created movie should have the following format (notice the array of strings - this will test your JS skills, so work through it methodically)
+- [x] The form should make a POST request to the server when submitted
+- [x] When the call comes back successfully, reset your form state and route the user to `/movies`
 
 Movie object format:
 

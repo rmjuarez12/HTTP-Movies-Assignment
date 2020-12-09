@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 import SavedList from "./Movies/SavedList";
 import MovieList from "./Movies/MovieList";
 import Movie from "./Movies/Movie";
@@ -31,6 +31,8 @@ const App = () => {
     <>
       <SavedList list={savedList} />
 
+      <Link to='/add-movie'>Add Movie</Link>
+
       <Route exact path='/'>
         <MovieList movies={movieList} />
       </Route>
@@ -41,6 +43,10 @@ const App = () => {
 
       <Route path='/update-movie/:id'>
         <MovieForm isEdit={true} getMovieList={getMovieList} />
+      </Route>
+
+      <Route path='/add-movie'>
+        <MovieForm isEdit={false} getMovieList={getMovieList} />
       </Route>
     </>
   );

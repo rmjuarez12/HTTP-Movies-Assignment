@@ -14,6 +14,7 @@ export default function MovieForm(props) {
 
   //* State to manage form data
   const [movieData, setMovieData] = useState(initialState);
+  console.log("movieData:", movieData);
 
   //* Set the params variable
   const params = useParams();
@@ -25,7 +26,8 @@ export default function MovieForm(props) {
   const handleChange = (e) => {
     const newData = {
       ...movieData,
-      [e.target.name]: e.target.value,
+      [e.target.name]:
+        e.target.name === "stars" ? e.target.value.split(",") : e.target.value,
     };
 
     setMovieData(newData);
@@ -35,7 +37,7 @@ export default function MovieForm(props) {
   const handleSubmission = (e) => {
     e.preventDefault();
 
-    const apiURL = `http://localhost:5000/api/movies/${params.id}`;
+    const apiURL = `http://localhost:5000/api/movies/${movieData.id}`;
 
     axios
       .put(apiURL, movieData)
@@ -51,17 +53,21 @@ export default function MovieForm(props) {
 
   //* Function to get the data IF we have a path parameter
   useEffect(() => {
-    const apiURL = `http://localhost:5000/api/movies/${params.id}`;
+    if (params.id !== undefined) {
+      const apiURL = `http://localhost:5000/api/movies/${params.id}`;
 
-    axios
-      .get(apiURL)
-      .then((res) => {
-        setMovieData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      axios
+        .get(apiURL)
+        .then((res) => {
+          setMovieData(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, [params.id]);
+
+  //* Convert the array of stars into a string
 
   return (
     <div className='movie-form'>
@@ -102,17 +108,17 @@ export default function MovieForm(props) {
           />
         </label>
 
-        <div className='stars'>
-          {movieData.stars.map((star, index) => {
-            const starId = Date.now() + index * 2;
-
-            return (
-              <div className='star' key={starId}>
-                {star}
-              </div>
-            );
-          })}
-        </div>
+        <label htmlFor='stars'>
+          stars
+          <input
+            type='text'
+            name='stars'
+            id='stars'
+            placeholder='Stars (Separate them by commas)'
+            onChange={handleChange}
+            value={movieData.stars}
+          />
+        </label>
 
         <button>{props.isEdit ? "Edit Movie" : "Add Movie"}</button>
       </form>
